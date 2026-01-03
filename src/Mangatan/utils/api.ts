@@ -198,7 +198,7 @@ export const checkChapterStatus = async (baseUrl: string, creds?: AuthCredential
     }
 };
 
-export const preprocessChapter = async (baseUrl: string, chapterPath: string, creds?: AuthCredentials): Promise<void> => {
+export const preprocessChapter = async (baseUrl: string, chapterPath: string, creds?: AuthCredentials, addSpaceOnMerge?: boolean): Promise<void> => {
     const mangaMatch = chapterPath.match(/\/manga\/(\d+)/);
     const chapterMatch = chapterPath.match(/\/chapter\/([\d.]+)/);
 
@@ -223,7 +223,8 @@ export const preprocessChapter = async (baseUrl: string, chapterPath: string, cr
     const body: any = { 
         base_url: baseUrl, 
         context: document.title, 
-        pages: absolutePages 
+        pages: absolutePages,
+        add_space_on_merge: addSpaceOnMerge
     };
     if (creds?.user) body.user = creds.user;
     if (creds?.pass) body.pass = creds.pass;
@@ -238,7 +239,7 @@ export const logDebug = (msg: string, isDebug: boolean) => {
     if (isDebug) console.log(`[OCR PC Hybrid] ${new Date().toLocaleTimeString()} ${msg}`);
 };
 
-export const cleanPunctuation = (text: string): string => {
+export const cleanPunctuation = (text: string, preserveSpaces: boolean = false): string => {
     if (!text) return text;
     let t = text
         .replace(/[ ]*!!+/g, '‼')
@@ -257,6 +258,8 @@ export const cleanPunctuation = (text: string): string => {
         .replace(/^[!?:]+$/g, '')
         .replace(/([⁉⁈‼⁇])[!?:]+/g, '$1')
         .replace(/[!?:]+([⁉⁈‼⁇])/g, '$1');
+
+    if (preserveSpaces) return t;
     return t.replace(/\u0020/g, '');
 };
 
