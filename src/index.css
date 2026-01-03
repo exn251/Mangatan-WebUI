@@ -205,9 +205,10 @@ html.ocr-reader-mode body {
     margin: 10px auto;
 }
 
-/* --- HIDE OCR OVERLAY WHEN SUWAYOMI READING OPTIONS ARE OPEN --- */
+/* --- HIDE OCR OVERLAY WHEN SUWAYOMI UI OPTIONS ARE OPEN --- */
 body:has(.MuiDialog-root) .ocr-overlay-container,
-body:has(.MuiDialogContent-root) .ocr-overlay-container {
+body:has(.MuiDialogContent-root) .ocr-overlay-container,
+body:has(.MuiBox-root[dir="rtl"][style*="transform: none"]) .ocr-overlay-container {
     display: none !important;
     pointer-events: none !important;
 }
